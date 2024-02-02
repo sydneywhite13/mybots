@@ -9,6 +9,9 @@ y = 0
 # note: change the z variable to half the height to prevent the simulator from growing the link
 z = 0.5
 
-pyrosim.Start_SDF("world.sdf")
-pyrosim.Send_Cube(name="Box", pos=[x, y, z ], size=[length, width, height])
-pyrosim.End()
+def Create_World():
+    pyrosim.Start_SDF("world.sdf")
+    pyrosim.Send_Cube(name="Box", pos=[x, y, z], size=[length, width, height])
+    pyrosim.End()
+
+Create_World()
