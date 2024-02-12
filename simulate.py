@@ -3,6 +3,8 @@ import pybullet_data
 import time
 import pyrosim.pyrosim as pyrosim
 import numpy
+import math
+import random
 
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -20,8 +22,13 @@ pyrosim.Prepare_To_Simulate(robotId)
 backLegSensorValues = numpy.zeros(1000)
 frontLegSensorValues = numpy.zeros(1000)
 
+targetAngles = numpy.sin(numpy.linspace(0, 2*math.pi, 1000))
+numpy.save('data/target_angles.npy', targetAngles)
+
 #position control: motor rees a target position as input
 #velocity control: continously rotating objects where the velocity desired is input
+
+#the target position is the angle between the links of the joint, it always starts as 0 (positive is outwards)
 for i in range(1000):
     p.stepSimulation()
     backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
@@ -34,7 +41,19 @@ for i in range(1000):
 
         controlMode= p.POSITION_CONTROL,
 
-        targetPosition=0.0,
+        targetPosition= ((random.random() - 0.5)*math.pi)/25.0,
+
+        maxForce=500)
+
+    pyrosim.Set_Motor_For_Joint(
+
+        bodyIndex=robotId,
+
+        jointName="Torso_FrontLeg",
+
+        controlMode=p.POSITION_CONTROL,
+
+        targetPosition= ((random.random() - 0.5)*math.pi)/25.0,
 
         maxForce=500)
     time.sleep(1/60)
