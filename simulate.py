@@ -17,12 +17,26 @@ robotId = p.loadURDF("body.urdf")
 p.loadSDF("world.sdf")
 pyrosim.Prepare_To_Simulate(robotId)
 # note: the length of the array must match the for loop index
-backLegSensorValues = numpy.zeros(100)
-frontLegSensorValues = numpy.zeros(100)
-for i in range(100):
+backLegSensorValues = numpy.zeros(1000)
+frontLegSensorValues = numpy.zeros(1000)
+
+#position control: motor rees a target position as input
+#velocity control: continously rotating objects where the velocity desired is input
+for i in range(1000):
     p.stepSimulation()
     backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
     frontLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("FrontLeg")
+    pyrosim.Set_Motor_For_Joint(
+
+        bodyIndex= robotId,
+
+        jointName="Torso_BackLeg",
+
+        controlMode= p.POSITION_CONTROL,
+
+        targetPosition=0.0,
+
+        maxForce=500)
     time.sleep(1/60)
     #print(i)
 numpy.save('data/back_sensor_output.npy', backLegSensorValues)
