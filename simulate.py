@@ -22,8 +22,19 @@ pyrosim.Prepare_To_Simulate(robotId)
 backLegSensorValues = numpy.zeros(1000)
 frontLegSensorValues = numpy.zeros(1000)
 
-targetAngles = numpy.sin(numpy.linspace(0, 2*math.pi, 1000))
-numpy.save('data/target_angles.npy', targetAngles)
+frontLegAmplitude = math.pi/4.0
+frontLegFrequency = 10
+frontLegPhaseOffset = 0
+
+frontLegTargetAngles = numpy.sin((numpy.linspace(0, 2*math.pi, 1000)*frontLegFrequency) + frontLegPhaseOffset)*frontLegAmplitude
+numpy.save('data/front_leg_target_angles.npy', frontLegTargetAngles)
+
+backLegAmplitude = math.pi/4.0
+backLegFrequency = 10
+backLegPhaseOffset = 0
+
+backLegTargetAngles = numpy.sin((numpy.linspace(0, 2*math.pi, 1000)*backLegFrequency) + backLegPhaseOffset)*backLegAmplitude
+numpy.save('data/back_leg_target_angles.npy', backLegTargetAngles)
 
 #position control: motor rees a target position as input
 #velocity control: continously rotating objects where the velocity desired is input
@@ -41,7 +52,7 @@ for i in range(1000):
 
         controlMode= p.POSITION_CONTROL,
 
-        targetPosition= ((random.random() - 0.5)*math.pi)/25.0,
+        targetPosition= backLegTargetAngles[i],
 
         maxForce=500)
 
@@ -53,7 +64,7 @@ for i in range(1000):
 
         controlMode=p.POSITION_CONTROL,
 
-        targetPosition= ((random.random() - 0.5)*math.pi)/25.0,
+        targetPosition= frontLegTargetAngles[i],
 
         maxForce=500)
     time.sleep(1/60)
