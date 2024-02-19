@@ -29,9 +29,9 @@ frontLegPhaseOffset = 0
 frontLegTargetAngles = numpy.sin((numpy.linspace(0, 2*math.pi, 1000)*frontLegFrequency) + frontLegPhaseOffset)*frontLegAmplitude
 numpy.save('data/front_leg_target_angles.npy', frontLegTargetAngles)
 
-backLegAmplitude = math.pi/8.0
+backLegAmplitude = math.pi/6.0
 backLegFrequency = 10
-backLegPhaseOffset = math.pi/8.0
+backLegPhaseOffset = -math.pi/6.0
 
 backLegTargetAngles = numpy.sin((numpy.linspace(0, 2*math.pi, 1000)*backLegFrequency) + backLegPhaseOffset)*backLegAmplitude
 numpy.save('data/back_leg_target_angles.npy', backLegTargetAngles)
