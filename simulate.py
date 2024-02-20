@@ -24,7 +24,7 @@ frontLegSensorValues = numpy.zeros(1000)
 
 frontLegAmplitude = math.pi/4.0
 frontLegFrequency = 10
-frontLegPhaseOffset = 0
+frontLegPhaseOffset = math.pi/6.0
 
 frontLegTargetAngles = numpy.sin((numpy.linspace(0, 2*math.pi, 1000)*frontLegFrequency) + frontLegPhaseOffset)*frontLegAmplitude
 numpy.save('data/front_leg_target_angles.npy', frontLegTargetAngles)
