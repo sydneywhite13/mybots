@@ -1,9 +1,9 @@
 import pybullet as p
-import pybullet_data
+import pyrosim.pyrosim as pyrosim
 
 class WORLD:
     def __init__(self):
-        p.setAdditionalSearchPath(pybullet_data.getDataPath())
 
         self.planeId = p.loadURDF("plane.urdf")
         p.loadSDF("world.sdf")
+        pyrosim.Prepare_To_Simulate(self.planeId)
