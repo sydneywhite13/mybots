@@ -21,11 +21,16 @@ class SIMULATION:
         for i in range(c.array_length):
             p.stepSimulation()
             self.robot.Sense(i)
-            self.robot.Act()
+
+            self.robot.Act(i)
 
             time.sleep(c.sleep)
             #print(i)
     def __del__(self):
         p.disconnect()
+        for sensor in self.robot.sensors:
+            self.robot.sensors[sensor].Save_Values()
+        for motor in self.robot.motors:
+            self.robot.motors[motor].Save_Values()
 
 
