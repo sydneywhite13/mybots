@@ -10,10 +10,18 @@ class MOTOR:
         self.Prepare_To_Act()
         print(jointName)
 
+
+    # modify so that one motor oscillates at half the frequency of the other
+    # must include conditional statement dependent on self.jointName
     def Prepare_To_Act(self):
-        self.amplitude = c.amplitude
-        self.frequency = c.frequency
-        self.offset = c.offset
+        if self.jointName == 'Torso_BackLeg':
+            self.amplitude = c.amplitude
+            self.frequency = c.frequency*0.5
+            self.offset = c.offset
+        else:
+            self.amplitude = c.amplitude
+            self.frequency = c.frequency
+            self.offset = c.offset
         self.motorValues = numpy.sin(
             (numpy.linspace(0, 2 * math.pi, 1000) * self.frequency) + self.offset) * self.amplitude
 
