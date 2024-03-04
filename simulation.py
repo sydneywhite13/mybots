@@ -22,7 +22,7 @@ class SIMULATION:
             p.stepSimulation()
             self.robot.Sense(i)
             self.robot.Think()
-            self.robot.Act(i)
+            self.robot.Act()
 
             time.sleep(c.sleep)
             #print(i)
