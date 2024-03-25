@@ -10,11 +10,11 @@ class SOLUTION:
         self.weights = numpy.random.rand(3, 2)
         self.weights = self.weights * 2 - 1
 
-    def Evaluate(self):
+    def Evaluate(self, direct_or_gui):
         self.Create_World()
         self.Create_Robot()
         self.Create_Brain()
-        os.system("python3 simulate.py")
+        os.system(f'python3 simulate.py {direct_or_gui}')
         f = open("fitness.txt", 'r')
         self.fitness = float(f.read())
         f.close()

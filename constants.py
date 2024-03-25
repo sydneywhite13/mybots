@@ -2,7 +2,7 @@ import math
 
 gravity = -9.8
 
-array_length = 1000
+array_length = 100
 
 amplitude = math.pi/4.0
 frequency = 10
@@ -21,7 +21,7 @@ max_force = 500
 
 sleep = 1/60
 
-numberofGenerations = 2
+numberofGenerations = 10
 
 box_x = 10
 box_y = 30

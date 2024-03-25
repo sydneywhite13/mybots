@@ -7,8 +7,12 @@ import time
 import constants as c
 
 class SIMULATION:
-    def __init__(self):
-        self.physicsClient = p.connect(p.GUI)
+    def __init__(self, directOrGUI):
+        if directOrGUI == "DIRECT":
+            self.physicsClient = p.connect(p.DIRECT)
+        # for running blind
+        else:
+            self.physicsClient = p.connect(p.GUI)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         #p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
         p.setGravity(0, 0, c.gravity)
@@ -30,7 +34,10 @@ class SIMULATION:
         p.disconnect()
         for sensor in self.robot.sensors:
             self.robot.sensors[sensor].Save_Values()
-        for motor in self.robot.motors:
-            self.robot.motors[motor].Save_Values()
+        #for motor in self.robot.motors:
+        #    self.robot.motors[motor].Save_Values()
+
+    def Get_Fitness(self):
+        self.robot.Get_Fitness()
 
 
