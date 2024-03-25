@@ -20,3 +20,15 @@ backLegPhaseOffset = -math.pi/6.0
 max_force = 500
 
 sleep = 1/60
+
+numberofGenerations = 2
+
+box_x = 10
+box_y = 30
+box_z = 0.5
+
+length = 1
+width = 1
+height = 1
+
+# should also include torso, back leg, and front leg

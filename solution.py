@@ -2,6 +2,7 @@ import numpy
 import pyrosim.pyrosim as pyrosim
 import random
 import os
+import constants as c
 
 
 class SOLUTION:
@@ -14,22 +15,25 @@ class SOLUTION:
         self.Create_Robot()
         self.Create_Brain()
         os.system("python3 simulate.py")
+        f = open("fitness.txt", 'r')
+        self.fitness = float(f.read())
+        f.close()
 
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
-        pyrosim.Send_Cube(name="Box", pos=[10, 30, 0.5], size=[1, 1, 1])
+        pyrosim.Send_Cube(name="Box", pos=[c.box_x, c.box_y, c.box_z], size=[c.length, c.width, c.height])
         pyrosim.End()
 
     def Create_Robot(self):
         pyrosim.Start_URDF("body.urdf")
         # x,y,z = 0, 0, 0.5 length, width, height = 1,1,1
-        pyrosim.Send_Cube(name="Torso", pos=[1.5, 0, 1.5], size=[1, 1, 1])
+        pyrosim.Send_Cube(name="Torso", pos=[1.5, 0, 1.5], size=[c.length, c.width, c.height])
         # only the root link has absolute position, everything else is relative to its upstream joint
 
         pyrosim.Send_Joint(name="Torso_BackLeg", parent="Torso", child="BackLeg", type="revolute", position=[1, 0, 1])
-        pyrosim.Send_Cube(name="BackLeg", pos=[-0.5, 0, -0.5], size=[1, 1, 1])
+        pyrosim.Send_Cube(name="BackLeg", pos=[-0.5, 0, -0.5], size=[c.length, c.width, c.height])
         pyrosim.Send_Joint(name="Torso_FrontLeg", parent="Torso", child="FrontLeg", type="revolute", position=[2, 0, 1])
-        pyrosim.Send_Cube(name="FrontLeg", pos=[0.5, 0, -0.5], size=[1, 1, 1])
+        pyrosim.Send_Cube(name="FrontLeg", pos=[0.5, 0, -0.5], size=[c.length, c.width, c.height])
 
         pyrosim.End()
 
@@ -49,4 +53,9 @@ class SOLUTION:
                 pyrosim.Send_Synapse(sourceNeuronName=currentRow, targetNeuronName=currentColumn+3, weight=self.weights[currentRow][currentColumn])
 
         pyrosim.End()
+
+    def Mutate(self):
+        row = random.randint(0, 2)
+        column = random.randint(0, 1)
+        self.weights[row, column] = random.random()* 2 - 1
 
