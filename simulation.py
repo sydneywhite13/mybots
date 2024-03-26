@@ -8,6 +8,7 @@ import constants as c
 
 class SIMULATION:
     def __init__(self, directOrGUI):
+        self.directOrGUI = directOrGUI
         if directOrGUI == "DIRECT":
             self.physicsClient = p.connect(p.DIRECT)
         # for running blind
@@ -27,8 +28,8 @@ class SIMULATION:
             self.robot.Sense(i)
             self.robot.Think()
             self.robot.Act()
-
-            time.sleep(c.sleep)
+            if self.directOrGUI == 'GUI':
+                time.sleep(c.sleep)
             #print(i)
     def __del__(self):
         p.disconnect()
