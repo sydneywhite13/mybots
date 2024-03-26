@@ -33,8 +33,8 @@ class SIMULATION:
             #print(i)
     def __del__(self):
         p.disconnect()
-        for sensor in self.robot.sensors:
-            self.robot.sensors[sensor].Save_Values()
+        #for sensor in self.robot.sensors:
+        #    self.robot.sensors[sensor].Save_Values()
         #for motor in self.robot.motors:
         #    self.robot.motors[motor].Save_Values()
 

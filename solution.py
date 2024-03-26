@@ -3,6 +3,7 @@ import pyrosim.pyrosim as pyrosim
 import random
 import os
 import constants as c
+import time
 
 
 class SOLUTION:
@@ -14,19 +15,48 @@ class SOLUTION:
     def Set_ID(self, nextAvailableID):
         self.myID = nextAvailableID
 
+    def Start_Simulation(self, direct_or_gui):
+        self.Create_World()
+        self.Create_Robot()
+        self.Create_Brain()
+        os.system("start /B python3 simulate.py " + direct_or_gui + ' ' + str(self.myID))
+        # os.system(f'start /B python3 simulate.py {direct_or_gui} {self.myID}')
+        # os.system(f'python3 simulate.py {direct_or_gui}')
+
+    def Wait_For_Simulation_To_End(self):
+        fitnessFileName = f'fitness{self.myID}.txt'
+        while not os.path.exists(fitnessFileName):
+            time.sleep(0.01)
+        f = open(fitnessFileName, 'r')
+        self.fitness = float(f.read())
+        f.close()
+        os.system(f'del fitness{self.myID}.txt')
+        #print(self.fitness)
+
+
     def Evaluate(self, direct_or_gui):
         self.Create_World()
         self.Create_Robot()
         self.Create_Brain()
-        os.system(f'start /B python3 simulate.py {direct_or_gui} {self.myID}')
-        f = open("fitness.txt", 'r')
+        os.system("start /B python3 simulate.py " + direct_or_gui + ' ' + str(self.myID))
+        # os.system(f'start /B python3 simulate.py {direct_or_gui} {self.myID}')
+        # os.system(f'python3 simulate.py {direct_or_gui}')
+
+        fitnessFileName = f'fitness{self.myID}.txt'
+        while not os.path.exists(fitnessFileName):
+            time.sleep(0.01)
+        f = open(fitnessFileName, 'r')
         self.fitness = float(f.read())
+        print(self.fitness)
         f.close()
 
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
         pyrosim.Send_Cube(name="Box", pos=[c.box_x, c.box_y, c.box_z], size=[c.length, c.width, c.height])
         pyrosim.End()
+
+        while not os.path.exists("world.sdf"):
+            time.sleep(0.01)
 
     def Create_Robot(self):
         pyrosim.Start_URDF("body.urdf")
@@ -40,6 +70,9 @@ class SOLUTION:
         pyrosim.Send_Cube(name="FrontLeg", pos=[0.5, 0, -0.5], size=[c.length, c.width, c.height])
 
         pyrosim.End()
+
+        while not os.path.exists("body.urdf"):
+            time.sleep(0.01)
 
 
     def Create_Brain(self):
@@ -57,6 +90,9 @@ class SOLUTION:
                 pyrosim.Send_Synapse(sourceNeuronName=currentRow, targetNeuronName=currentColumn+3, weight=self.weights[currentRow][currentColumn])
 
         pyrosim.End()
+
+        while not os.path.exists(f'brain{self.myID}.nndf'):
+            time.sleep(0.01)
 
     def Mutate(self):
         row = random.randint(0, 2)

@@ -17,7 +17,7 @@ backLegFrequency = 10
 backLegPhaseOffset = -math.pi/6.0
 '''
 
-populationSize = 2
+populationSize = 10
 
 max_force = 500
 

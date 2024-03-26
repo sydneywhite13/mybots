@@ -16,7 +16,7 @@ class ROBOT:
         self.Prepare_To_Act()
         #creates neural network
         self.nn = NEURAL_NETWORK(f'brain{solutionID}.nndf')
-
+        self.solutionID = solutionID
         os.system(f'del brain{solutionID}.nndf')
 
     def Prepare_To_Sense(self):
@@ -46,10 +46,14 @@ class ROBOT:
     def Think(self):
         self.nn.Update()
         #self.nn.Print()
-    def Get_Fitness(self, solutionID):
+
+    def Get_Fitness(self):
         stateOfLinkZero = p.getLinkState(self.robotId, 0)
         positionOfLinkZero = stateOfLinkZero[0]
         xCoordinateOfLinkZero = positionOfLinkZero[0]
-        filename = f'fitness{solutionID}.txt'
+        filename = f'tmp{self.solutionID}.txt'
         f = open(filename, 'w')
         f.write(str(xCoordinateOfLinkZero))
+        f.close()
+        os.system(f'rename tmp{self.solutionID}.txt fitness{self.solutionID}.txt')
+        #os.rename("tmp"+str(solutionID)+".txt" , "fitness"+str(solutionID)+".txt")
