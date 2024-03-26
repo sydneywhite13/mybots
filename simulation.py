@@ -7,7 +7,7 @@ import time
 import constants as c
 
 class SIMULATION:
-    def __init__(self, directOrGUI):
+    def __init__(self, directOrGUI, solutionID):
         self.directOrGUI = directOrGUI
         if directOrGUI == "DIRECT":
             self.physicsClient = p.connect(p.DIRECT)
@@ -19,7 +19,7 @@ class SIMULATION:
         p.setGravity(0, 0, c.gravity)
 
         self.world = WORLD()
-        self.robot = ROBOT()
+        self.robot = ROBOT(solutionID)
         pyrosim.Prepare_To_Simulate(self.robot.robotId)
 
     def Run(self):

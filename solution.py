@@ -6,15 +6,19 @@ import constants as c
 
 
 class SOLUTION:
-    def __init__(self):
+    def __init__(self, nextAvailableID):
+        self.myID = nextAvailableID
         self.weights = numpy.random.rand(3, 2)
         self.weights = self.weights * 2 - 1
+
+    def Set_ID(self, nextAvailableID):
+        self.myID = nextAvailableID
 
     def Evaluate(self, direct_or_gui):
         self.Create_World()
         self.Create_Robot()
         self.Create_Brain()
-        os.system(f'python3 simulate.py {direct_or_gui}')
+        os.system(f'start /B python3 simulate.py {direct_or_gui} {self.myID}')
         f = open("fitness.txt", 'r')
         self.fitness = float(f.read())
         f.close()
@@ -39,7 +43,7 @@ class SOLUTION:
 
 
     def Create_Brain(self):
-        pyrosim.Start_NeuralNetwork("brain.nndf")
+        pyrosim.Start_NeuralNetwork(f'brain{self.myID}.nndf')
 
         pyrosim.Send_Sensor_Neuron(name=0, linkName="Torso")
         pyrosim.Send_Sensor_Neuron(name=1, linkName="BackLeg")
@@ -48,8 +52,8 @@ class SOLUTION:
         pyrosim.Send_Motor_Neuron(name=3, jointName="Torso_BackLeg")
         pyrosim.Send_Motor_Neuron(name=4, jointName="Torso_FrontLeg")
 
-        for currentRow in range(2):
-            for currentColumn in range(1):
+        for currentRow in range(0, 3):
+            for currentColumn in range(0, 2):
                 pyrosim.Send_Synapse(sourceNeuronName=currentRow, targetNeuronName=currentColumn+3, weight=self.weights[currentRow][currentColumn])
 
         pyrosim.End()

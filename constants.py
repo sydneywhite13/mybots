@@ -2,7 +2,7 @@ import math
 
 gravity = -9.8
 
-array_length = 100
+array_length = 500
 
 amplitude = math.pi/4.0
 frequency = 10
@@ -17,9 +17,11 @@ backLegFrequency = 10
 backLegPhaseOffset = -math.pi/6.0
 '''
 
+populationSize = 2
+
 max_force = 500
 
-sleep = 1/60
+sleep = 1/1000
 
 numberofGenerations = 10
 
